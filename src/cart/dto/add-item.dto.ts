@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsInt, Min, Max } from 'class-validator';
+import { IsNotEmpty, IsString, IsInt, IsNumber, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class AddItemDto {
@@ -7,6 +7,7 @@ export class AddItemDto {
   coffeeId: string;
 
   @IsInt()
+  @IsNumber({maxDecimalPlaces:2})  
   @Min(1)
   @Max(5)
   @Type(() => Number)

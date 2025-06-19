@@ -17,27 +17,9 @@ export class CheckoutService {
     const cart = await this.cartService.getCart(cartId);
 
     // Criar o pedido
-    const order = await this.prisma.order.create({
-      data: {
-        cart: { connect: { id: cartId } },
-        totalItems: 10,
-        shippingFee: 1,
-        totalAmount: 2,
-        // Aqui você poderia salvar também o endereço e método de pagamento
-        // em modelos adicionais relacionados ao pedido
-      },
-    });
+    
 
     // Formatar a resposta
-    return {
-      id: order.id,
-      items: [],
-      uniqueCategories: 1,
-      itemsTotal: Number(order.totalItems),
-      shippingFee: Number(order.shippingFee),
-      total: Number(order.totalAmount),
-      status: order.status,
-      createdAt: order.createdAt,
-    };
+    
   }
 } 

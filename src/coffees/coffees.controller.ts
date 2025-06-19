@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Param, HttpStatus, HttpCode, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, HttpStatus, HttpCode, Query, Patch, Delete } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
+import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 
 @Controller('coffees')
 export class CoffeesController {
@@ -13,22 +14,26 @@ export class CoffeesController {
 
   @Get('search')
   async search(
-    @Query('start_date') start_date?: string,
-    @Query('end_date') end_date?: string,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+    @Query('minPrice') minPrice?: string,
+    @Query('maxPrice') maxPrice?: string,
     @Query('name') name?: string,
     @Query('tags') tags?: string,
-    @Query('limit') limit = 10,
-    @Query('offset') offset = 0,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10
   ) {
     const tagsList = tags ? tags.split(',') : [];
     
     return this.coffeesService.searchCoffees({
-      start_date: start_date ? new Date(start_date) : undefined,
-      end_date: end_date ? new Date(end_date) : undefined,
+      startDate: startDate ? new Date(startDate) : undefined,
+      endDate: endDate ? new Date(endDate) : undefined,
+      minPrice: minPrice ? parseFloat(minPrice) : undefined,
+      maxPrice: maxPrice ? parseFloat(maxPrice) : undefined,  
       name,
       tags: tagsList,
       limit: +limit,
-      offset: +offset,
+      page: +page
     });
   }
 
@@ -44,4 +49,14 @@ export class CoffeesController {
   }
 
   // adicionar outro endpoints
+  @Patch(':id')
+  async update(@Param('id') id:string, @Body() updateCoffeeDto: UpdateCoffeeDto){
+    return this.coffeesService.update(id, updateCoffeeDto)
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  async delete(@Param('id') id:string){
+    return this.coffeesService.remove(id)
+  }
 } 

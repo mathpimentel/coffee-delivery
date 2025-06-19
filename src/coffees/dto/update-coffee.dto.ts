@@ -3,5 +3,5 @@ import { CreateCoffeeDto } from './create-coffee.dto';
 
 export class UpdateCoffeeDto extends PartialType(CreateCoffeeDto) {
   tagIds?: string[];
-  // adicione outros campos
+  // adicione outros campos -> os campos são herdado do createDto
 } 
